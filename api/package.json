@@ -8,7 +8,8 @@
   "license": "GNU General Public License",
   "dependencies": {
     "restify": "~2.6.0",
-    "mongoose": "~3.6.20"
+    "mongoose": "~3.6.20",
+    "async": "~0.2.9"
   },
   "devDependencies": {
     "chai": "~1.8.1",

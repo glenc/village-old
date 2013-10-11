@@ -1,24 +1,46 @@
+var async   = require('async');
 var cs      = require('../command-service');
 var errors  = require('./errors');
 
-var CommandServiceAdapter = {
-  submit: function(req, res, next) {
-    var response = function(err, id) {
-      if (err) {
-        if (err instanceof cs.errors.InvalidCommandError) {
-          return next(new errors.BadRequestError('Invalid command'));
-        } else {
-          return next(err);
-        }
-      }
+var CommandServiceAdapter = module.exports = (function() {
+  var mapError = function(err) {
+    if (err instanceof cs.errors.InvalidCommandError) {
+      return new errors.BadRequestError('Invalid command');
+    }
+    return err;
+  };
 
-      // no error, all good
-      res.send(202, { id: id });
+  var response = function(res, next) {
+    return function(err, code, data) {
+      if (err) {
+        return next(mapError(err));
+      }
+      res.send(code, data);
       return next();
     };
+  };
 
-    cs.submit(req.body, response);
-  }
-};
+  var submit = function(req, res, next) {
+    async.waterfall([
+        function(cb)      { cs.submit(req.body, cb); },
+        function(id, cb)  { cb(null, 202, { id: id }); }
+      ],
+      new response(res, next)
+    );
+  };
 
-module.exports = CommandServiceAdapter;
+  var get = function(req, res, next) {
+    async.waterfall([
+      function(cb) { cs.get(req.params.id, cb); },
+      function(cmd, cb) { cb(null, 200, cmd); }
+      ],
+      new response(res, next)
+    );
+  };
+
+  return {
+    submit: submit,
+    get: get
+  };
+
+})();
