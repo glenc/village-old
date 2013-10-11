@@ -1,3 +1,6 @@
+var async = require('async');
+var db    = require('../lib/db');
+
 module.exports.responseParser = function(callback) {
   return function(err, req, res, data) {
     var obj = {
@@ -8,4 +11,15 @@ module.exports.responseParser = function(callback) {
     };
     callback(null, obj);
   };
+};
+
+module.exports.resetDb = function(callback) {
+  var models = Object.keys(db);
+  async.each(
+    models,
+    function(model, cb) {
+      db[model].remove({}, cb);
+    },
+    callback
+  );
 }

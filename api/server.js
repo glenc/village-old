@@ -1,6 +1,4 @@
-var restify   = require('restify');
-var mongoose  = require('mongoose');
-var csa       = require('./lib/command-service-adapter');
+var api = require('./lib/api-server');
 
 function getEnvironment() {
   if (process.argv.length > 2) {
@@ -14,23 +12,7 @@ function getEnvironment() {
 var env = getEnvironment();
 var config = require('./config/' + env);
 
-// connect to db
-mongoose.connect(config.db.conn);
-
-// init server
-var server = restify.createServer({
-  name: 'village-api',
-  version: '1.0.0'
-});
-server.use(restify.acceptParser(server.acceptable));
-server.use(restify.queryParser());
-server.use(restify.bodyParser());
-server.use(restify.gzipResponse());
-
-// command handler
-server.post('/commands', csa.submit);
-server.get ('/commands/:id', csa.get);
-
+var server = api.createServer(config);
 server.listen(config.web.port, function start() {
   console.log('%s (%s) listening at %s', server.name, env, server.url);
 });

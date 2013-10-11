@@ -15,6 +15,7 @@ describe('Commands', function() {
     var result = {};
     before(function(done) {
       async.waterfall([
+        function(cb)        { helper.resetDb(cb); },
         function(cb)        { client.post('/commands', { command: 'testCommand' }, new helper.responseParser(cb)); },
         function(data, cb)  { result = data; cb(); }
       ], done);
@@ -54,6 +55,7 @@ describe('Commands', function() {
     var result = {};
     before(function(done) {
       async.waterfall([
+        function(cb)                { helper.resetDb(cb); },
         function(cb)                { client.post('/commands', { command: 'testCommand' }, cb); },
         function(req, res, obj, cb) { client.get('/commands/' + obj.id, new helper.responseParser(cb)); },
         function(data, cb)          { result = data; cb(); }
@@ -74,6 +76,7 @@ describe('Commands', function() {
     var result = {};
     before(function(done) {
       async.waterfall([
+        function(cb)        { helper.resetDb(cb); },
         function(cb)        { client.get('/commands/000000000000000000000000', new helper.responseParser(cb)); },
         function(data, cb)  { result = data; cb(); }
       ], done);
