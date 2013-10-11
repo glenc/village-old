@@ -1,4 +1,5 @@
-var errors = require('./errors');
+var errors  = require('./errors');
+var Command = require('../schema/command');
 
 var CommandService = {
   submit: function(command, callback) {
@@ -6,11 +7,30 @@ var CommandService = {
       return callback(new errors.InvalidCommandError());
     }
 
-    return callback(null, 123);
+    // strip off command name
+    var name = command.command;
+    delete command.command;
+
+    // create command to save
+    var cmd = {
+      command: name,
+      submittedAt: new Date(),
+      submittedBy: 'unknown',
+      payload: command
+    };
+
+    Command.create(cmd, function(err, doc) {
+      if (err) return callback(err);
+      return callback(null, doc._id);
+    });
   },
 
   get: function(id, callback) {
-    return callback(null, { id:id });
+    Command.findById(id, function(err, doc) {
+      if (err) return callback(err);
+      if (!doc) return callback(new errors.NotFoundError());
+      return callback(null, doc.toObject());
+    });
   },
 
   errors: errors

@@ -74,17 +74,13 @@ describe('Commands', function() {
     var result = {};
     before(function(done) {
       async.waterfall([
-        function(cb)        { client.get('/commands/999', new helper.responseParser(cb)); },
+        function(cb)        { client.get('/commands/000000000000000000000000', new helper.responseParser(cb)); },
         function(data, cb)  { result = data; cb(); }
       ], done);
     });
 
     it ('should return status code 404', function() {
       expect(result.res.statusCode).to.equal(404);
-    });
-
-    it ('should not return data', function() {
-      expect(result.data).not.to.exist;
     });
 
   })

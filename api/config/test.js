@@ -1,6 +1,9 @@
 var config = {};
 
 // db
+config.db = {
+  conn: 'mongodb://localhost/village-test'
+};
 
 // web
 config.web = {

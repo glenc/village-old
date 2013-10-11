@@ -1,4 +1,5 @@
 var async   = require('async');
+var restify = require('restify');
 var cs      = require('../command-service');
 var errors  = require('./errors');
 
@@ -6,6 +7,9 @@ var CommandServiceAdapter = module.exports = (function() {
   var mapError = function(err) {
     if (err instanceof cs.errors.InvalidCommandError) {
       return new errors.BadRequestError('Invalid command');
+    }
+    if (err instanceof cs.errors.NotFoundError) {
+      return new restify.ResourceNotFoundError();
     }
     return err;
   };

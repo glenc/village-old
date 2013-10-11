@@ -1,5 +1,6 @@
-var restify = require('restify');
-var csa     = require('./lib/command-service-adapter');
+var restify   = require('restify');
+var mongoose  = require('mongoose');
+var csa       = require('./lib/command-service-adapter');
 
 function getEnvironment() {
   if (process.argv.length > 2) {
@@ -13,6 +14,10 @@ function getEnvironment() {
 var env = getEnvironment();
 var config = require('./config/' + env);
 
+// connect to db
+mongoose.connect(config.db.conn);
+
+// init server
 var server = restify.createServer({
   name: 'village-api',
   version: '1.0.0'
