@@ -1,11 +1,10 @@
 var expect    = require('chai').expect;
 var async     = require('async');
 var restify   = require('restify');
-var settings  = require('./settings');
-var helper    = require('./test-helper');
+var settings  = require('../settings');
+var helper    = require('../test-helper');
 
-describe('Commands', function() {
-
+describe('Commands API', function() {
   var client = restify.createJsonClient({
     url: settings.url,
     version: '*'

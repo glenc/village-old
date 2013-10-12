@@ -1,6 +1,6 @@
 var util = require('util');
 
-var errors = [ 'InvalidCommandError', 'NotFoundError' ];
+var errors = [ 'InvalidCommandError', 'NotFoundError', 'UnknownCommandError' ];
 
 function AbstractError(msg, constr) {
   Error.captureStackTrace(this, constr || this);

@@ -3,7 +3,7 @@ var Schema    = mongoose.Schema;
 
 var commandSchema = new Schema({
   command:      { type: String, required: true },
-  payload:      { type: Schema.Types.Mixed },
+  body:         { type: Schema.Types.Mixed },
   result:       { type: Schema.Types.Mixed },
   error:        { type: Schema.Types.Mixed },
   submittedBy:  { type: String, required: true },
