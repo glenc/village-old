@@ -2,7 +2,7 @@ var db = require('../../../db');
 
 var ActiveFamiliesQuery = module.exports = (function() {
   var execute = function(parameters, projection, callback) {
-    callback();
+    callback(null, [{one:1}]);
   };
 
   return {
