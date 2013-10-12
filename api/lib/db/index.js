@@ -1,3 +1,4 @@
 module.exports = {
-  Command: require('./command')
+  Command:  require('./command'),
+  Family:   require('./family')
 };

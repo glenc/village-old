@@ -42,9 +42,13 @@ var CommandApi = module.exports = (function() {
     );
   };
 
+  var registerRoutes = function(server) {
+    server.post('/commands',      submit);
+    server.get ('/commands/:id',  get);
+  }
+
   return {
-    submit: submit,
-    get: get
+    registerRoutes: registerRoutes
   };
 
 })();

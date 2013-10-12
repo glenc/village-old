@@ -1,6 +1,7 @@
-var restify     = require('restify');
-var mongoose    = require('mongoose');
-var commandApi  = require('./command-api');
+var restify         = require('restify');
+var mongoose        = require('mongoose');
+var commandApi      = require('./command-api');
+var queryApi        = require('./query-api');
 
 var createServer = module.exports.createServer = function(config) {
   // init server
@@ -19,8 +20,8 @@ var createServer = module.exports.createServer = function(config) {
   mongoose.connect(config.db.conn);
 
   // configure routes
-  server.post('/commands',      commandApi.submit);
-  server.get ('/commands/:id',  commandApi.get);
+  commandApi.registerRoutes(server);
+  queryApi.registerRoutes(server);
 
   return server;
 };
