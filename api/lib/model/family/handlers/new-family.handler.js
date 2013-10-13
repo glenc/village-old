@@ -12,7 +12,7 @@ var NewFamilyHandler = module.exports = (function() {
 
     db.Family.create(data, function(err, doc) {
       if (err) return callback(err);
-      return callback(null, { id: doc.id, message: 'Family created successfully' });
+      return callback(null, { family_id: doc.id, message: 'Family created successfully' });
     });
   };
 

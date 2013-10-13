@@ -19,7 +19,7 @@ var UpdateContactHandler = module.exports = (function() {
 
       var c = doc.contacts[i];
       Object.keys(payload).forEach(function(prop) {
-        if (prop != 'id' && prop != 'family_id') {
+        if (prop != 'contact_id' && prop != 'family_id') {
           c[prop] = payload[prop];
         }
       });
