@@ -13,3 +13,7 @@ results
 
 npm-debug.log
 node_modules
+admin/app/vendor
+dist
+.tmp
+.sass-cache
