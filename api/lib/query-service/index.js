@@ -29,10 +29,14 @@ var QueryService = module.exports = (function() {
 
   var execute = function(model, query, projection, parameters, callback) {
     if (!models[model]) return callback(new errors.UnknownModelError());
+
     var q = _.find(models[model].queries, function(q) { return q.name == query; });
     if (!q) return callback(new errors.UnknownQueryError());
 
-    q.execute(parameters, projection, callback);
+    var p = _.find(models[model].projections, function(p) { return p.name == projection; });
+    if (!p) p = { select: '' };
+
+    q.execute(parameters, p, callback);
   };
 
   return {

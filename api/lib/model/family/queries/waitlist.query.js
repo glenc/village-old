@@ -4,7 +4,7 @@ var db = require('../../../db');
 var ActiveFamiliesQuery = module.exports = (function() {
   var execute = function(parameters, projection, callback) {
     var select = projection.select || '';
-    var params = { status: 'Active' };
+    var params = { status: 'Waitlist' };
     _.defaults(params, parameters); // merge other parameters passed
 
     db.Family.find(params, select, callback);
@@ -12,7 +12,7 @@ var ActiveFamiliesQuery = module.exports = (function() {
 
   return {
     model: 'family',
-    name: '',
+    name: 'waitlist',
     execute: execute
   }
 })();

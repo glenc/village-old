@@ -12,7 +12,7 @@ var Receiver = module.exports = (function() {
   var resolveCommand = function(id, err, result) {
     var update = {
       $set: {
-        error: err,
+        error: err ? err.toString() : null,
         result: result,
         completedAt: new Date()
       }
