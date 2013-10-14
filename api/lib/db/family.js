@@ -21,10 +21,23 @@ var contactSchema = new Schema({
   }
 });
 
+var eventSchema = new Schema({
+  date:         { type: Date, required: true },
+  type:         { type: String, required: true },
+  description:  { type: String, required: true }
+});
+
+var logSchema = new Schema({
+  date:       { type: Date, required: true },
+  message:    { type: String, required: true }
+});
+
 var familySchema = new Schema({
   name:       { type: String, required: true, unique: true},
   status:     { type: String, required: true, enum: [ 'New', 'Waitlist', 'Active', 'Alumni', 'Exited' ] },
   contacts:   [ contactSchema ],
+  events:     [ eventSchema ],
+  logs:       [ logSchema ],
   updatedAt:  { type: Date,   required: true },
   createdAt:  { type: Date,   required: true }
 });

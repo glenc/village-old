@@ -5,7 +5,7 @@ var handler = require('../../lib/model/family/handlers/new-family.handler.js');
 describe('NewFamilyHandler', function() {
   describe('with valid payload', function() {
     var outcome = {};
-    var payload = { name: 'Cooper_Stevens', status: 'New' };
+    var payload = { name: 'Cooper_Stevens', status: 'Active', statusDate: new Date(2011, 1, 1) };
 
     before(function(done) {
       handler.handle(payload, function(err, result) {
@@ -34,6 +34,14 @@ describe('NewFamilyHandler', function() {
         expect(doc.name).to.equal(payload.name);
         expect(doc.status).to.equal(payload.status);
         done();
+      });
+    });
+
+    it('logs an entry to the family events', function(done) {
+      db.Family.findById(outcome.result.id, function(err, doc) {
+        expect(doc.events).to.exist;
+        expect(doc.events).to.have(1);
+        expect(doc.events[0].date).to.equal(payload.statusDate);
       });
     });
   });

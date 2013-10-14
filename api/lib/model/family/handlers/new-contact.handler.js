@@ -2,6 +2,14 @@ var _  = require('underscore');
 var db = require('../../../db');
 
 var NewContactHandler = module.exports = (function() {
+  var eventForContact = function(data) {
+    return {
+      date: new Date(),
+      description: 'Added new ' + data.type + ' ' + data.firstName + ' ' + data.lastName,
+      type: 'Data'
+    };
+  };
+
   var handle = function(payload, callback) {
     db.Family.findById(payload.family_id, function(err, doc) {
       if (err) return callback(err);
@@ -13,6 +21,7 @@ var NewContactHandler = module.exports = (function() {
       delete payload.family_id;
 
       doc.contacts.push(payload);
+      doc.events.push(eventForContact(payload));
       doc.updatedAt = new Date();
 
       doc.save(function(err, doc) {
