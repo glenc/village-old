@@ -43,7 +43,10 @@ var CommandApi = module.exports = (function() {
   };
 
   var registerRoutes = function(server) {
+    console.log("POST /commands");
     server.post('/commands',      submit);
+
+    console.log("GET  /commands/:id");
     server.get ('/commands/:id',  get);
   }
 

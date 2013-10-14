@@ -22,30 +22,42 @@ var QueryApi = module.exports = (function() {
 
   var getHandler = function(model) {
     return function(req, res, next) {
-      res.send(200, {});
-      return next();
+      var projection = req.params.projection || '';
+
+      queryService.get(model, req.params.id, projection, function(err, result) {
+        if (err) return next(err);
+        res.send(200, result);
+        return next();
+      });
     };
   };
 
   var registerRoutes = function(server) {
     var nounInflector = new natural.NounInflector();
-    var models = queryService.getModels();
+    var models = queryService.getRegisteredModels();
 
     models.forEach(function(model) {
       var routeBase = '/' + nounInflector.pluralize(model);
 
       // queries
-      var queries = queryService.getQueries(model);
+      var queries = queryService.getRegisteredQueries(model);
+      var hasGetter = false;
       queries.forEach(function(query) {
-        var route = routeBase + '/' + query;
-        console.log('query %s', route);
-        server.get(route, new queryHandler(model, query));
+        if (query == 'get') {
+          hasGetter = true;
+        } else {
+          var route = routeBase + '/' + query;
+          console.log('GET  %s', route);
+          server.get(route, new queryHandler(model, query));
+        }
       });
 
-      // getter
-      var route = routeBase + '/:id';
-      console.log('get   %s', route);
-      server.get(route, new getHandler(model));
+      // do getter last so named queries get execited first
+      if (hasGetter) {
+        var route = routeBase + '/:id';
+        console.log('GET  %s', route);
+        server.get(route, new getHandler(model));
+      }
     });
   };
 

@@ -1,7 +1,7 @@
 var _  = require('underscore');
 var db = require('../../../db');
 
-var ActiveFamiliesQuery = module.exports = (function() {
+var ActiveQuery = module.exports = (function() {
   var execute = function(parameters, projection, callback) {
     var select = projection.select || '';
     var params = { status: 'Active' };

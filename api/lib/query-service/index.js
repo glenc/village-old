@@ -18,11 +18,11 @@ var QueryService = module.exports = (function() {
     models[projection.model] = model;
   };
 
-  var getModels = function() {
+  var getRegisteredModels = function() {
     return Object.keys(models);
   };
 
-  var getQueries = function(model) {
+  var getRegisteredQueries = function(model) {
     if (!models[model]) return [];
     return models[model].queries.map(function(q) { return q.name; });
   };
@@ -39,11 +39,24 @@ var QueryService = module.exports = (function() {
     q.execute(parameters, p, callback);
   };
 
+  var get = function(model, id, projection, callback) {
+    if (!models[model]) return callback(new errors.UnknownModelError());
+
+    var q = _.find(models[model].queries, function(q) { return q.name == 'get'; });
+    if (!q) return callback(new errors.UnknownQueryError());
+
+    var p = _.find(models[model].projections, function(p) { return p.name == projection; });
+    if (!p) p = { };
+
+    q.execute(id, p, callback);
+  };
+
   return {
     registerProjection: registerProjection,
     registerQuery: registerQuery,
-    getModels: getModels,
-    getQueries: getQueries,
-    execute: execute
+    getRegisteredModels: getRegisteredModels,
+    getRegisteredQueries: getRegisteredQueries,
+    execute: execute,
+    get: get
   };
 })();
