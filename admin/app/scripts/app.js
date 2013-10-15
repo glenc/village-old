@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('villageAdminApp', [])
+angular.module('villageAdminApp', [
+    'ngRoute'
+  ])
+
+  // routes
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
+      .when('/', { templateUrl: 'views/family-list.html', controller: 'FamilyListCtrl' })
+      .otherwise({ redirectTo: '/' });
   });
